@@ -14,7 +14,6 @@ Follow official website instruction to install miniconda :
 http://conda.pydata.org/miniconda.html
 
 1. Create virtual environment and activate it
-.............................................
 
 ```
     conda create --name brace python=2.7
@@ -22,7 +21,6 @@ http://conda.pydata.org/miniconda.html
 ```
 
 2. Build and install from source (alternative)
-................................................
 
 ```
     cd braceroot/conda
@@ -36,8 +34,7 @@ http://conda.pydata.org/miniconda.html
     conda install notebook nose sphinx sphinx_rtd_theme pandoc coverage
 ```
 
-Authors
--------
+## Authors
 
 * Erin Sparks
 * Lindsay Erndwein
