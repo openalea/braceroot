@@ -1,62 +1,47 @@
-.. contents::
+# Brace Root
 
-=======
-cereals
-=======
+Brace Root contribution to mecanichal stability
 
-CEreal REpresentation, ALgorithm and Simulation
-
-=============
-Documentation
-=============
-
-[...]
+## Documentation
 
 
-=================================================
-Installation with Miniconda (Windows, linux, OSX)
-=================================================
+### Installation with Miniconda (Windows, linux, OSX)
 
-Miniconda installation
-----------------------
+#### Miniconda installation
 
 Follow official website instruction to install miniconda :
 
 http://conda.pydata.org/miniconda.html
 
-1. Install conda-build if not already installed
-...............................................
-
-.. code:: shell
-
-    conda install conda-build
-
-2. Create virtual environment and activate it
+1. Create virtual environment and activate it
 .............................................
 
-.. code:: shell
+```
+    conda create --name brace python=2.7
+    source activate brace
+```
 
-    conda create --name cereals python
-    source activate cereals
-
-3. Build and install openalea.phenomenal package
+2. Build and install from source (alternative)
 ................................................
 
-.. code:: shell
-
-    cd cereals/conda
+```
+    cd braceroot/conda
     conda build -c openalea/label/unstable -c openalea .
-    conda install -c openalea/label/unstable -c openalea --use-local openalea.cereals
+    conda install -c openalea/label/unstable -c openalea --use-local braceroot
+```
 
 (Optional) Install several package managing tools :
 
-.. code:: shell
-
+```
     conda install notebook nose sphinx sphinx_rtd_theme pandoc coverage
+```
 
 Authors
 -------
 
-* Fournier	    Christian
-* Christophe    Pradal
-* Artzet	    Simon
+* Erin Sparks
+* Lindsay
+* Baptiste Brument
+* Christian Fournier	
+* Christophe Pradal
+* Adam Stager
