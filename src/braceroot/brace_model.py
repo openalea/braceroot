@@ -26,16 +26,7 @@ def height(angle, length):
     a = 180-angle
     return length * cos(radians(a))
 
-"""
-def brace_roots(nb_whorl=2,
-                whorl_heights=[2., 8.],
-                nb_root=[16, 14],
-                whorl_stem_radius=[1., 1.],
-                root_angle=[(110., 90.),(125., 90.)],
-                root_length=[5., 19.],
-                visible_ratio=[.5, .5],
-                root_diameter=[0.3, 0.1]):
-"""
+
 def run(angle=angle, length_above_soil= [length_above_soil1, length_above_soil2],
         root_number=[root_number1, root_number2],
         stem_diameter=stem_diameter,
@@ -91,7 +82,7 @@ def brace(height_whorl_1=2.,
           nb_root_whorl_1=16,
           root_angle_whorl_1=110.,
           root_length_whorl_1=5.,
-          visible_ratio_whorl_1=.5,
+          visible_ratio_whorl_1=0.8,
           root_diameter_whorl_1=3.,
           root_stiffness_whorl_1=600,
           height_whorl_2=8.,
