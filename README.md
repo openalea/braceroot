@@ -1,6 +1,6 @@
 # Brace Root
 
-Brace Root contribution to mecanichal stability
+Brace Root contribution to mechanical stability
 
 ## Documentation
 
@@ -40,7 +40,7 @@ Authors
 -------
 
 * Erin Sparks
-* Lindsay
+* Lindsay Erndwein
 * Baptiste Brument
 * Christian Fournier	
 * Christophe Pradal
