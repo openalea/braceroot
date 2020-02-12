@@ -2,7 +2,7 @@ from math import cos, sin, degrees, radians
 import numpy as np
 from braceroot import brace_root, mechanic
 
-
+stem_height = 10.
 angle = [110., 140.]
 stem_diameter = [1., 2.]
 br_diameter = [0.1, 0.7]
@@ -30,6 +30,7 @@ def height(angle, length):
 def run(angle=angle, length_above_soil= [length_above_soil1, length_above_soil2],
         root_number=[root_number1, root_number2],
         stem_diameter=stem_diameter,
+        stem_height=stem_height,
         root_length=[root_length1, root_length2],
         root_diameter=br_diameter,
         wind_force=42.):

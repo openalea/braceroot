@@ -22,7 +22,12 @@ def brace_curve(height, length, visible_ratio, angles, stem_radius, phyllotaxis=
     x = math.sqrt(aerial_length**2 - height**2) + r
     pt1 = (x * cp, x * sp, 0.)
     hidden_ratio = 1. - visible_ratio
-    pt2 = (Vector3(pt0) + (1+hidden_ratio)*(Vector3(pt1)-Vector3(pt0)))
+    root_length = hidden_ratio * length
+ 
+    dir_vec = Vector3(pt1)-Vector3(pt0)
+    d = dir_vec.normalize()
+    pt2 = Vector3(pt1) + (root_length)*dir_vec
+    # print(str(d+root_length)+ ' vs ' + str(length))
     return Polyline([pt0, pt1, pt2])
 
 def curve2surface(crv, radius):
@@ -32,7 +37,6 @@ def curve2surface(crv, radius):
 
     n = len(crv)
     r = [(radius, radius) for i in range(n)]
-    section
     sweep = Extrusion(crv, section, Point2Array(r))
     return sweep
 
@@ -64,8 +68,11 @@ def brace_roots(nb_whorl=2,
 
     roots = {}
 
-    # TODO ; check the validity
     roots['nb_whorl'] = nb_whorl
+    if nb_whorl == 0:
+        return roots
+    
+    # TODO ; check the validity
     roots['whorl_heights'] = whorl_heights
     roots['nb_root'] = nb_root
 
@@ -97,7 +104,7 @@ def brace_roots(nb_whorl=2,
     # brace roots are packed around the node, so that stem perimeter = sum(root diameter)
     roots['whorl_stem_radius'] = whorl_stem_radius
     if whorl_stem_radius is None:
-        roots['whorl_stem_radius'] = [np.sum(radii) / np.pi for radii in roots['root_radius']]
+        roots['whorl_stem_radius'] = [np.sum(radii) / (2*np.pi) for radii in roots['root_radius']]
     return roots
 
 
@@ -129,19 +136,23 @@ def brace_root_polylines(brace_roots):
 
 
 
-def view3d(brace_roots, stem_height, stem=False):
+def view3d(brace_roots, stem_height, stem=False, stalk_angle=0., stem_radius=0.03):
     """ Visualise the brace roots with or without the stem.
+    TODO: Add stem inclination.
     """
 
     broots = brace_roots
     scene = Scene()
 
-    whorl_stem_radius = broots['whorl_stem_radius']
+    whorl_stem_radius = broots.get('whorl_stem_radius', [stem_radius])
     if stem:
         stem_radius = max(whorl_stem_radius)
         _stem = Shape(geometry=Cylinder(stem_radius, stem_height),
                       appearance=Material(Color3(10,200,10)))
         scene.add(_stem)
+
+    if broots['nb_whorl'] == 0.:
+        return scene
 
     curves, radius = brace_root_polylines(broots)
     for crv, r in zip(curves, radius):

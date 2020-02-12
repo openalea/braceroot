@@ -24,7 +24,7 @@ class MechanicalElement(object):
         self.stem_theta = float(stem_theta)
         self.stem_phi = 0. #float(stem_phi)
 
-        print "Theta = ", self.stem_theta
+        print("Theta = ", self.stem_theta)
 
 
     def vector_stem(self):
@@ -37,7 +37,6 @@ class MechanicalElement(object):
         vector = Vector3(sin_theta * cos_phi,
                        sin_theta * sin_phi, 
                        cos_theta)
-        #print "Stem Vector =", vector
         return vector
 
     def force(self):
@@ -50,12 +49,13 @@ class MechanicalElement(object):
         """
         pass
 
+
 class BraceRoot(MechanicalElement):
     """ Brace Root.
     """
     def __init__(self, length, theta, psi, stiffness, height):
-        length /= 100.
-        height /= 100.
+        #length /= 100.
+        #height /= 100.
         theta = radians(theta)
         psi = radians(psi)
         self.length0 = length
@@ -134,8 +134,9 @@ class Stalk(MechanicalElement):
         """
         cos_phi = cos(self.stem_phi)
         sin_phi = sin(self.stem_phi)
+        # TODO: why negative sign ????
         moment = - self.stiffness * self.stem_theta * Vector3(-sin_phi, cos_phi, 0)
-        print 'Stalk Moment = ', moment
+        print('Stalk Moment = ', moment)
         return moment
 
 
@@ -150,7 +151,7 @@ class Weight(MechanicalElement):
         """ Force applied to the system (N).
         """
         force = Vector3(0, 0, - self.mass * Constant.g)
-        print 'Weight Force = ', force
+        print('Weight Force = ', force)
         return force
 
     def moment(self):
@@ -158,7 +159,7 @@ class Weight(MechanicalElement):
         """
         OG = self.height / 2.
         moment = OG * self.vector_stem() ^ self.force()
-        print 'Weight Moment = ', moment
+        print('Weight Moment = ', moment)
         return moment
 
 
@@ -174,7 +175,7 @@ class Wind(MechanicalElement):
         """ Force applied to the system (N).
         """
         force = self._force
-        print 'Wind Force = ', force
+        print('Wind Force = ', force)
         return force
 
     def moment(self):
@@ -182,7 +183,7 @@ class Wind(MechanicalElement):
         """
         OG = self.height / 2.
         moment = OG * self.vector_stem() ^ self.force()
-        print 'Wind Moment = ', moment
+        print('Wind Moment = ', moment)
         return moment
 
 
@@ -200,12 +201,14 @@ class Solver(dict):
         weight = self['weight']
         wind = self['wind']
         stalk = self['stalk']
-        whorl0 = self['whorl0']
+        whorl0 = self.get('whorl0', [])
         whorl1 = self.get('whorl1', [])
 
         elts = [weight, wind, stalk]
-        elts.extend(whorl0)
-        elts.extend(whorl1)
+        if whorl0:
+            elts.extend(whorl0)
+            if whorl1:
+                elts.extend(whorl1)
 
         def sum_moment(angles):
             theta = angles
@@ -222,6 +225,7 @@ def mechanics(roots, wind_force,
              stem_height=1.,
              stem_mass=1.,
              stalk_stiffness=600,
+             debug=False
              ):
     """ Compute the mechanical forces and moments applied to a maize plant with (or without) brace roots.
 
@@ -231,9 +235,8 @@ def mechanics(roots, wind_force,
         - architecture (roots)
           - stem_height (m)
           - stem_mass (kg)
-          - stem_stiffness (N/m)
+          - stalk_stiffness (N/m)
         - Wind force (N)
-        -
 
     Outputs:
         - Updated geometry
@@ -253,12 +256,10 @@ def mechanics(roots, wind_force,
 
 
     # Stalk (aka stem) creation
-    whorl_stem_radius = broots['whorl_stem_radius']
-    stem_radius = max(whorl_stem_radius)
-    # stem_mass
-    # stem_height
-    # stem_stiffness
-
+    if 'whorl_stem_radius' in broots:
+        whorl_stem_radius = broots['whorl_stem_radius']
+        stem_radius = max(whorl_stem_radius)
+        
     stalk = Stalk(stiffness=stalk_stiffness)
 
     scene['stalk'] = stalk
@@ -276,28 +277,32 @@ def mechanics(roots, wind_force,
 
     # Brace roots creation
     nb_whorl = broots['nb_whorl']
-    lengths = broots['root_length'] #cm
-    visible_ratios = broots['visible_ratio']
-    root_radius = broots['root_radius'] #cm
-    root_angle = broots['root_angle'] #degrees
-    root_stiffness = broots['root_stiffness'] #N/m
-    whs = broots['whorl_heights'] #cm
-    for i in range(nb_whorl):
-        height = whs[i]
-        nb_root = broots['nb_root'][i]
+    if nb_whorl:
+        lengths = broots['root_length'] #m
+        visible_ratios = broots['visible_ratio']
+        root_radius = broots['root_radius'] #m
+        root_angle = broots['root_angle'] #degrees
+        root_stiffness = broots['root_stiffness'] #N/m
+        whs = broots['whorl_heights'] #m
+        for i in range(nb_whorl):
+            height = whs[i]
+            nb_root = broots['nb_root'][i]
 
-        if nb_root:
-            delta_angle = 360. / nb_root
-            angle = 0.
-            for j in range(nb_root):
-                angles = (0.,0.) # TODO
-                angle += delta_angle
+            if nb_root:
+                delta_angle = 360. / nb_root
+                angle = 0.
+                for j in range(nb_root):
+                    angles = (0.,0.) # TODO
+                    angle += delta_angle
 
-                root = BraceRoot(length=lengths[i][j]*visible_ratios[i][j],
-                                 theta=root_angle[i][j], psi=angle,
-                                 stiffness=root_stiffness[i][j], height=height)
-                scene.setdefault('whorl'+str(i), []).append(root)
+                    root = BraceRoot(length=lengths[i][j]*visible_ratios[i][j],
+                                    theta=root_angle[i][j], psi=angle,
+                                    stiffness=root_stiffness[i][j], height=height)
+                    scene.setdefault('whorl'+str(i), []).append(root)
 
     final_theta = scene.solve()
-    print "Final theta is ", degrees(final_theta), "degrees."
-    return final_theta
+    print("Final theta is ", degrees(final_theta), "degrees.")
+    if debug:
+        return final_theta[0], scene
+    
+    return final_theta[0]

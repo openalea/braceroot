@@ -67,3 +67,4 @@ nosetests.xml
 
 # temporary dirs for Mac OS X
 .DS_Store
+.ipynb_checkpoints
