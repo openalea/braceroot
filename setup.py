@@ -28,7 +28,7 @@ setup(
 
     author="* Erin Sparks\n"
            "* Christophe Pradal\n"
-           "* & collaborators\n",
+           "* & al.\n",
 
     author_email="",
     maintainer="",
