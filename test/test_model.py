@@ -45,7 +45,7 @@ def two_whorl():
     root_diameter = 0.03 # 1 cm
     br = brace_root.brace_roots(nb_whorl=nb_whorl,                      
                      whorl_heights=[whorl_height, 3*whorl_height],
-                     nb_root=[10, 12],
+                     nb_root=[10, 10],
                      whorl_stem_radius= None,
                      root_angle = [110., 110.], # not used
                      root_length =[root_length]*2,
@@ -102,14 +102,20 @@ def test_meca0():
 
     print("Angles are: "+ ' '.join(map(str,angles)))
 
-def test_meca1():
+def test_meca1(wind_factor=1., nb_whorl=0):
     """ First we test without brace root.
     """
     stem_height = 1.
-    br = one_whorl()
+    if nb_whorl == 0:
+        br = no_whorl()
+    elif nb_whorl == 1:
+        br = one_whorl()
+    else: 
+        br = two_whorl()
+
     angles = []
     for i in range(10):
-        angle = mechanic.mechanics(br, wind_force=i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
+        angle = mechanic.mechanics(br, wind_force=wind_factor*i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
         angles.append(degrees(angle))
 
     print("Angles are: "+ ' '.join(map(str,angles)))
@@ -144,3 +150,41 @@ def test_debug1_strong(wind_factor=1., one=1):
             for bb in bbs:
                 print('Moment ', bb.moment())
     print("Angles are: "+ ' '.join(map(str,angles)))
+
+def test_brace_root_contribution():
+    br0 = no_whorl()
+    br1 = one_whorl()
+    br2 = two_whorl()
+
+    wind_force = 10. #N
+    stem_height = 1.
+    stem_mass = 1.
+    stalk_stiffness = 160.
+
+    def meca(br, debug=False):
+        return mechanic.mechanics(
+            br, 
+            wind_force=wind_force, 
+            stem_height=stem_height,
+            stem_mass=stem_mass,
+            stalk_stiffness=stalk_stiffness,
+            debug=debug)
+    
+    a0 = degrees(meca(br0))
+    a1 = degrees(meca(br1))
+    a2 = degrees(meca(br2))
+
+
+    _a2, scene = meca(br2, debug=True)
+    
+    bbs=scene['whorl0']
+    forces = [bb.force() for bb in bbs]
+    moments = [bb.moment() for bb in bbs]
+    print("Forces whorl0: ", forces)
+    print("Moments whorl0: ", moments)
+    assert abs(a0) >= abs(a1)
+    assert abs(a1) >= abs(a2)
+
+    print ("Angles: ", a0, a1, a2)
+    
+

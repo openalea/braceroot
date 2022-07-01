@@ -111,7 +111,8 @@ class BraceRoot(MechanicalElement):
     def moment(self):
         """ Moment of the force on the origin (base of the plant) (unit: N.m)
         """
-        moment = -self.h * self.vector_stem() ^ self.force()
+        # TODO : Check the sign of the force
+        moment = self.h * self.vector_stem() ^ self.force()
         #print 'Brace Moment = ', moment
         return moment
     
@@ -280,6 +281,7 @@ def mechanics(roots, wind_force,
     if nb_whorl:
         lengths = broots['root_length'] #m
         visible_ratios = broots['visible_ratio']
+        # root_angle has to be recomputed
         root_radius = broots['root_radius'] #m
         root_angle = broots['root_angle'] #degrees
         root_stiffness = broots['root_stiffness'] #N/m
