@@ -28,14 +28,14 @@ http://conda.pydata.org/miniconda.html
 
 ```
     cd braceroot/conda
-    conda build -c openalea/label/unstable -c openalea .
-    conda install -c openalea/label/unstable -c openalea --use-local braceroot
+    conda build -c openalea3 -c conda-forge .
+    conda install -c openalea3 -c conda-forge --use-local braceroot
 ```
 
 (Optional) Install several package managing tools :
 
 ```
-    conda install notebook pytest sphinx sphinx_rtd_theme pandoc coverage
+    conda install jupyterlab pytest
 ```
 
 ## Authors
