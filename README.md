@@ -16,8 +16,8 @@ http://conda.pydata.org/miniconda.html
 1. Create virtual environment and activate it
 
 ```
-    conda create --name brace python=2.7
-    source activate brace
+    conda create --name brace -c openalea3 -c conda-forge braceroot
+    conda activate brace
 ```
 
 2. Build and install from source (alternative)
@@ -31,14 +31,14 @@ http://conda.pydata.org/miniconda.html
 (Optional) Install several package managing tools :
 
 ```
-    conda install notebook nose sphinx sphinx_rtd_theme pandoc coverage
+    conda install notebook pytest sphinx sphinx_rtd_theme pandoc coverage
 ```
 
 ## Authors
 
 * Erin Sparks
-* Lindsay Erndwein
-* Baptiste Brument
-* Christian Fournier	
 * Christophe Pradal
+* Baptiste Brument
+* Lindsay Erndwein
+* Christian Fournier	
 * Adam Stager
