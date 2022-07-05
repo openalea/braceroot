@@ -10,10 +10,10 @@ from scipy import optimize
 from openalea.plantgl.all import Vector3, norm
 
 
-class Constant(object):
+class Constant:
     g = 9.81
 
-class MechanicalElement(object):
+class MechanicalElement:
     """ Abstract base class for defining force and moment of each element on the system.
     """
 
@@ -21,6 +21,7 @@ class MechanicalElement(object):
         """ This is the unknown.
         Lodging angle of the plant under wind at equilibrium.
         """
+        # TODO: Why this is not converted to radians?
         self.stem_theta = float(stem_theta)
         self.stem_phi = 0. #float(stem_phi)
 
@@ -111,7 +112,7 @@ class BraceRoot(MechanicalElement):
     def moment(self):
         """ Moment of the force on the origin (base of the plant) (unit: N.m)
         """
-        # TODO : Check the sign of the force
+        #TODO : Check the sign of the force
         moment = self.h * self.vector_stem() ^ self.force()
         #print 'Brace Moment = ', moment
         return moment
@@ -305,6 +306,6 @@ def mechanics(roots, wind_force,
     final_theta = scene.solve()
     print("Final theta is ", degrees(final_theta), "degrees.")
     if debug:
-        return final_theta[0], scene
+        return final_theta, scene
     
-    return final_theta[0]
+    return final_theta
