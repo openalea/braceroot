@@ -25,16 +25,17 @@ def one_whorl():
     whorl_stem_radius = 0.02 # 2 cm
     root_length = 0.15 # or 15 cm
     root_diameter = 0.03 # 1 cm
-    br = brace_root.brace_roots(nb_whorl=nb_whorl,                      
-                     whorl_heights=[whorl_height, 0.],
-                     nb_root=[10, 0],
-                     whorl_stem_radius= None,
-                     root_angle = [110., 140.],
-                     root_length =[root_length]*2,
-                     visible_ratio=[0.2, 0.8],
-                     root_diameter = [root_diameter]*2,
-                     root_stiffness=[600,600],
-                     )
+    br = brace_root.brace_roots(
+        nb_whorl=nb_whorl,                      
+        whorl_heights=[whorl_height, 0.],
+        nb_root=[10, 0],
+        whorl_stem_radius= None,
+        root_angle = [110., 140.],
+        root_length =[root_length]*2,
+        visible_ratio=[0.2, 0.8],
+        root_diameter = [root_diameter]*2,
+        root_stiffness=[600,600],
+        )
     return br
 
 def two_whorl():
@@ -43,16 +44,17 @@ def two_whorl():
     whorl_stem_radius = 0.02 # 2 cm
     root_length = 0.15 # or 15 cm
     root_diameter = 0.03 # 1 cm
-    br = brace_root.brace_roots(nb_whorl=nb_whorl,                      
-                     whorl_heights=[whorl_height, 3*whorl_height],
-                     nb_root=[10, 10],
-                     whorl_stem_radius= None,
-                     root_angle = [110., 110.], # not used
-                     root_length =[root_length]*2,
-                     visible_ratio=[0.2, 0.8],
-                     root_diameter = [root_diameter]*2,
-                     root_stiffness=[600,600],
-                     )
+    br = brace_root.brace_roots(
+        nb_whorl=nb_whorl,                      
+        whorl_heights=[whorl_height, 3*whorl_height],
+        nb_root=[10, 10],
+        whorl_stem_radius= None,
+        root_angle = [110., 110.], # not used
+        root_length =[root_length]*2,
+        visible_ratio=[0.2, 0.8],
+        root_diameter = [root_diameter]*2,
+        root_stiffness=[600,600],
+        )
     return br
 
 
@@ -72,8 +74,16 @@ def test_geometry():
     stem_height = 1. #m
     br = one_whorl()
 
-    final_angle = mechanic.mechanics(br, 0., stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
-    scene = brace_root.view3d(br, stem_height=stem_height, stem=True, stalk_angle=final_angle)
+    final_angle = mechanic.mechanics(
+        br, 0., 
+        stem_height=stem_height, 
+        stem_mass=1., 
+        stalk_stiffness=160.)
+    scene = brace_root.view3d(
+        br, 
+        stem_height=stem_height, 
+        stem=True, 
+        stalk_angle=final_angle)
 
     # What do we want to test?
     return scene
@@ -85,8 +95,17 @@ def test_geometry2():
     stem_height = 1. #m
     br = two_whorl()
 
-    final_angle = mechanic.mechanics(br, 0., stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
-    scene = brace_root.view3d(br, stem_height=stem_height, stem=True, stalk_angle=final_angle)
+    final_angle = mechanic.mechanics(
+        br, 
+        0., 
+        stem_height=stem_height, 
+        stem_mass=1., 
+        stalk_stiffness=160.)
+    scene = brace_root.view3d(
+        br, 
+        stem_height=stem_height, 
+        stem=True, 
+        stalk_angle=final_angle)
     return scene
 
 
@@ -97,7 +116,12 @@ def test_meca0():
     br = no_whorl()
     angles = []
     for i in range(10):
-        angle = mechanic.mechanics(br, wind_force=i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
+        angle = mechanic.mechanics(
+            br, 
+            wind_force=i, 
+            stem_height=stem_height, 
+            stem_mass=1., 
+            stalk_stiffness=160.)
         angles.append(degrees(angle))
 
     print("Angles are: "+ ' '.join(map(str,angles)))
@@ -115,7 +139,12 @@ def test_meca1(wind_factor=1., nb_whorl=0):
 
     angles = []
     for i in range(10):
-        angle = mechanic.mechanics(br, wind_force=wind_factor*i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160.)
+        angle = mechanic.mechanics(
+            br, 
+            wind_force=wind_factor*i, 
+            stem_height=stem_height, 
+            stem_mass=1., 
+            stalk_stiffness=160.)
         angles.append(degrees(angle))
 
     print("Angles are: "+ ' '.join(map(str,angles)))
@@ -125,7 +154,13 @@ def test_debug1():
     br = one_whorl()
     angles = []
     for i in range(10):
-        angle, scene = mechanic.mechanics(br, wind_force=i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160., debug=True)
+        angle, scene = mechanic.mechanics(
+            br, 
+            wind_force=i, 
+            stem_height=stem_height, 
+            stem_mass=1., 
+            stalk_stiffness=160., 
+            debug=True)
         angles.append(degrees(angle))
 
         bbs=scene['whorl0']
@@ -143,7 +178,13 @@ def test_debug1_strong(wind_factor=1., one=1):
         br = two_whorl()
     angles = []
     for i in range(10):
-        angle, scene = mechanic.mechanics(br, wind_force=wind_factor*i, stem_height=stem_height, stem_mass=1., stalk_stiffness=160., debug=True)
+        angle, scene = mechanic.mechanics(
+            br, 
+            wind_force=wind_factor*i, 
+            stem_height=stem_height, 
+            stem_mass=1., 
+            stalk_stiffness=160., 
+            debug=True)
         angles.append(degrees(angle))
         if one:
             bbs=scene['whorl0']
