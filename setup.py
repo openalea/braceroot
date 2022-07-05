@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-#       Copyright 2019 University of Delaware - CIRAD - INRAE
+#       Copyright 2019-2022 University of Delaware - CIRAD - INRAE
 #
 #       File author(s):
 #
@@ -22,8 +22,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="braceroot",
-    version="0.0.1",
-    description="Brace Root Mechanical Stability",
+    version="0.1.0",
+    description=" Modelling BraceRoot contributions to mechanical stability",
     long_description="",
 
     author="* Erin Sparks\n"
@@ -34,7 +34,7 @@ setup(
     maintainer="",
     maintainer_email="",
 
-    url="https://github.com/pradal/braceroot",
+    url="https://github.com/openalea/braceroot",
     keywords='',
 
     # package installation
