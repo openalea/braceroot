@@ -1,6 +1,6 @@
 # Brace Root
 
-[![Anaconda-Server Badge](https://anaconda.org/openalea3/braceroot/badges/installer/conda.svg)](https://conda.anaconda.org/openalea3)
+[![Anaconda-Server Badge](https://anaconda.org/openalea3/braceroot/badges/installer/conda.svg)](https://conda.anaconda.org/openalea3/braceroot)
 [![Anaconda-Server Badge](https://anaconda.org/openalea3/braceroot/badges/downloads.svg)](https://anaconda.org/openalea3/braceroot)
 [![CI Badge](https://github.com/openalea/braceroot/actions/workflows/conda-package-build.yml/badge.svg)](https://github.com/openalea/braceroot/actions)
 
