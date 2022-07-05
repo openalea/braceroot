@@ -1,34 +1,39 @@
+{% set data = load_setup_py_data() %}
+
 package:
   name: braceroot
-  version: 0.0.1
+  version: {{ data.get('version') }}
 
 source:
   path: ..
 
 
 about:
-  home: https://github.com/pradal/braceroot
-  summary: BraceRoot contributions to mechanical stability
+  home: https://github.com/openalea/braceroot
+  summary: Modelling BraceRoot contributions to mechanical stability
 
 build:
+  noarch: python
   preserve_egg_dir: True
   number: 0
-  script: python setup.py install
+  script: {{PYTHON}} setup.py install 
 
 requirements:
   build:
-    - python
+    - python {{PY_VER}}
     - setuptools
   run:
-    - python
+    - python  >=3.6
     - openalea.plantgl
+    - oawidgets
+    - scipy
 
 test:
   requires:
-    - nose
+    - pytest
   imports:
     - braceroot
   source_files:
     - test/test_*.py
   commands:
-   - nosetests -v
+   - pytest -v test_*.py
