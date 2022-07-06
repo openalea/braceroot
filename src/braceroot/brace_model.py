@@ -1,28 +1,37 @@
+""" High-level model interface
+
+"""
+
 from math import cos, sin, degrees, radians
 import numpy as np
 from braceroot import brace_root, mechanic
 
-stem_height = 10.
-angle = [110., 140.]
-stem_diameter = [1., 2.]
-br_diameter = [0.1, 0.7]
-break_strength = [8., 75.]
-displacement = [0.5, 5]
+# Min/max Interval parameter values
+stem_height = 10. # cm
+angle = [110., 140.] # degrees
+stem_diameter = [1., 2.] # cm
+br_diameter = [0.1, 0.7] # cm
+break_strength = [8., 75.] # cm
+displacement = [0.5, 5] # cm
 
 # whorls
 #W1
-root_length1 = [8.5, 19.]
-length_above_soil1 = [1.2, 2.3]
-root_number1 = [8, 20]
+root_length1 = [8.5, 19.] #cm
+length_above_soil1 = [1.2, 2.3] #cm
+root_number1 = [8, 20] # number
 
-root_length2 = [8.5, 17.5]
-length_above_soil2 = [1.5, 7.]
-root_number2 = [8, 20]
+root_length2 = [8.5, 17.5] # cm
+length_above_soil2 = [1.5, 7.] # cm
+root_number2 = [8, 20] # cm 
 
 def select(values):
+    "Return a random value in an interval using a uniform law."
     return np.random.uniform(*values)
 
 def height(angle, length):
+    """Return the height of a brace root which has an angle from the stem (up direction) and a given length.
+    Angle is expressed in degrees
+    """
     a = 180-angle
     return length * cos(radians(a))
 

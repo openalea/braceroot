@@ -193,7 +193,7 @@ class Solver(dict):
 
     def solve(self):
         f = self.moment_theorem()
-        solutions = optimize.root(f, x0=0.)
+        solutions = optimize.root(f, x0=pi/4)
         # We should only allow the solution to be between [-pi/2, pi/2].
         return solutions.x
 
@@ -205,13 +205,17 @@ class Solver(dict):
         stalk = self['stalk']
         whorl0 = self.get('whorl0', [])
         whorl1 = self.get('whorl1', [])
+        whorl2 = self.get('whorl2', [])
 
         elts = [weight, wind, stalk]
         if whorl0:
             elts.extend(whorl0)
-            if whorl1:
-                elts.extend(whorl1)
+        if whorl1:
+            elts.extend(whorl1)
+        if whorl2:
+            elts.extend(whorl2)
 
+        print('Solver elts: ', elts)
         def sum_moment(angles):
             theta = angles
             for elt in elts:
@@ -225,8 +229,8 @@ class Solver(dict):
 
 def mechanics(roots, wind_force,
              stem_height=1.,
-             stem_mass=1.,
-             stalk_stiffness=600,
+             stem_mass=0.1,
+             stalk_stiffness=100,
              debug=False
              ):
     """ Compute the mechanical forces and moments applied to a maize plant with (or without) brace roots.
@@ -253,7 +257,6 @@ def mechanics(roots, wind_force,
         - visualise the resulting scene
     """
     broots = roots
-
     scene = Solver() # list of mecha elts
 
 

@@ -1,7 +1,10 @@
 """ A collection of simple allometric functions for parameterising the
 architecture of maize"""
+
+import atexit
 import os
 import math
+from turtle import st
 import numpy as np
 from itertools import cycle
 
@@ -76,6 +79,7 @@ def brace_roots(nb_whorl=2,
     roots['whorl_heights'] = whorl_heights
     roots['nb_root'] = nb_root
 
+    print(root_length)
     if not isinstance(root_length[0], list):
         roots['root_length'] = [[root_length[i]]*nb_root[i] for i in range(nb_whorl)]
     else:
@@ -138,7 +142,7 @@ def brace_root_polylines(brace_roots):
 
 def view3d(brace_roots, stem_height, stem=False, stalk_angle=0., stem_radius=0.03):
     """ Visualise the brace roots with or without the stem.
-    TODO: Add stem inclination.
+    
     """
 
     broots = brace_roots
@@ -147,7 +151,14 @@ def view3d(brace_roots, stem_height, stem=False, stalk_angle=0., stem_radius=0.0
     whorl_stem_radius = broots.get('whorl_stem_radius', [stem_radius])
     if stem:
         stem_radius = max(whorl_stem_radius)
-        _stem = Shape(geometry=Cylinder(stem_radius, stem_height),
+        geometry=Cylinder(stem_radius, stem_height)
+        if stalk_angle:
+            print('angle is ', stalk_angle)
+            geometry = AxisRotated(
+                axis=Vector3(1,0,0), 
+                angle=stalk_angle, 
+                geometry=geometry)
+        _stem = Shape(geometry=geometry,
                       appearance=Material(Color3(10,200,10)))
         scene.add(_stem)
 

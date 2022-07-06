@@ -8,31 +8,26 @@
 """
 
 from math import cos, sin, degrees, radians
+from typing import final
 import numpy as np
 from braceroot import brace_root, mechanic
 
-def no_whorl():
-    """ Test the geometry of the brace root model. 
-    Here we test only one whorl. 
-    """
-    nb_whorl = 0
-    br = brace_root.brace_roots(nb_whorl=nb_whorl)
-    return br
+from test_braceroot import no_whorl, whorls
 
 def one_whorl():
     nb_whorl = 1
     whorl_height = 0.02 # 2 cm
     whorl_stem_radius = 0.02 # 2 cm
-    root_length = 0.15 # or 15 cm
-    root_diameter = 0.03 # 1 cm
+    root_length = 0.05 # or 15 cm
+    root_diameter = 0.03 # 3 cm
     br = brace_root.brace_roots(
         nb_whorl=nb_whorl,                      
         whorl_heights=[whorl_height, 0.],
         nb_root=[10, 0],
         whorl_stem_radius= None,
-        root_angle = [110., 140.],
+        root_angle = [135., 135.],
         root_length =[root_length]*2,
-        visible_ratio=[0.2, 0.8],
+        visible_ratio=[1., 1.],
         root_diameter = [root_diameter]*2,
         root_stiffness=[600,600],
         )
@@ -46,7 +41,7 @@ def two_whorl():
     root_diameter = 0.03 # 1 cm
     br = brace_root.brace_roots(
         nb_whorl=nb_whorl,                      
-        whorl_heights=[whorl_height, 3*whorl_height],
+        whorl_heights=[whorl_height, 5*whorl_height],
         nb_root=[10, 10],
         whorl_stem_radius= None,
         root_angle = [110., 110.], # not used
@@ -56,7 +51,6 @@ def two_whorl():
         root_stiffness=[600,600],
         )
     return br
-
 
 def test_weight_only():
     """ Test the geometry of the brace root model. 
@@ -79,6 +73,8 @@ def test_geometry():
         stem_height=stem_height, 
         stem_mass=1., 
         stalk_stiffness=160.)
+    if not isinstance(final_angle, float):
+        final_angle = final_angle[0]
     scene = brace_root.view3d(
         br, 
         stem_height=stem_height, 
@@ -199,7 +195,7 @@ def test_brace_root_contribution():
 
     wind_force = 10. #N
     stem_height = 1.
-    stem_mass = 1.
+    stem_mass = 0.05 # 50g
     stalk_stiffness = 160.
 
     def meca(br, debug=False):
@@ -228,4 +224,35 @@ def test_brace_root_contribution():
 
     print ("Angles: ", a0, a1, a2)
     
+def test_brace_root_contribution2(stiff=600., wind=10.):
+    br0 = whorls(whorl=(0,0,0), stiffness=stiff)
+    br1 = whorls(whorl=(1,0,0), stiffness=stiff)
+    br2 = whorls(whorl=(1,1,0), stiffness=stiff)
+    br3 = whorls(whorl=(1,1,1), stiffness=stiff)
+    br2_1 = whorls(whorl=(0,1,0), stiffness=stiff)
+    br3_2 = whorls(whorl=(0,0,1), stiffness=stiff)
+
+
+    wind_force = wind #N
+    stem_height = 1.5
+    stem_mass = 0.1
+    stalk_stiffness = 145.
+
+    def meca(br, debug=False):
+        return mechanic.mechanics(
+            br, 
+            wind_force=wind_force, 
+            stem_height=stem_height,
+            stem_mass=stem_mass,
+            stalk_stiffness=stalk_stiffness,
+            debug=debug)
+    
+    angles = []
+    for br in (br0, br1, br2, br3, br2_1, br3_2):
+        angles.append(degrees(meca(br)))
+
+    
+    print ("Angles: ", angles)
+    return angles
+
 
