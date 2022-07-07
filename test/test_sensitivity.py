@@ -7,7 +7,7 @@ import pandas as pd
 
 from braceroot import brace_root, mechanic
 
-from test_braceroot import no_whorl, whorls
+from braceroot.brace_root import no_whorl, whorls
 
 ##############################################################################
 # Test if the model behave linearly % wind force

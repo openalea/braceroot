@@ -12,7 +12,7 @@ from typing import final
 import numpy as np
 from braceroot import brace_root, mechanic
 
-from test_braceroot import no_whorl, whorls
+from braceroot.brace_root import no_whorl, whorls
 
 def one_whorl():
     nb_whorl = 1

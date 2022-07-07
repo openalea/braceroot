@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="braceroot",
-    version="0.1.2",
+    version="0.1.3",
     description=" Modelling BraceRoot contributions to mechanical stability",
     long_description="",
 
